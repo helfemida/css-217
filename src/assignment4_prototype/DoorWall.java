@@ -1,6 +1,8 @@
-package assignment4_builder.mazegame.old_mazegame;
+package assignment4_prototype;
 
-public class DoorWall extends Wall{
+import assignment4_builder.mazegame.old_mazegame.Wall;
+
+public class DoorWall extends Wall {
     private Room r1;
     private Room r2;
 
@@ -8,7 +10,6 @@ public class DoorWall extends Wall{
         this.r1 = r1;
         this.r2 = r2;
     }
-
     public int getOtherRoom(int roomNo) {
         return roomNo == r1.getRoomNo() ? r2.getRoomNo() : r1.getRoomNo();
     }

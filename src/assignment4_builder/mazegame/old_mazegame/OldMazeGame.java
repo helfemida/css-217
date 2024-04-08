@@ -1,8 +1,11 @@
 package assignment4_builder.mazegame.old_mazegame;
 
 public class OldMazeGame {
+    public static void main(String[] args) {
+        System.out.println(createMaze());
+    }
 
-    public Maze createMaze () {
+    public static Maze createMaze () {
         Maze aMaze = new Maze();
         Room r1 = new Room(1);
         Room r2 = new Room(2);

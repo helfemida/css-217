@@ -7,8 +7,11 @@ import assignment4_prototype.ClonableMaze;
 
 
 public class NewMazeGame {
+    public static void main(String[] args) {
+        System.out.println(createNewMaze());
+    }
 
-    public Maze createNewMaze() {
+    public static Maze createNewMaze() {
         MazeBuilder builder = new MazeBuilder();
 
         Room r1 = new Room(1);
