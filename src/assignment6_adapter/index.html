@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather App</title>
+</head>
+<body>
+  <h1>Weather Information</h1>
+  <div id="weatherInfo"></div>
+
+  <script>
+    class OpenWeatherMapAPI {
+      constructor(apiKey) {
+        this.apiKey = apiKey;
+      }
+
+      async fetchData(city) {
+        try {
+          const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${this.apiKey}&units=metric`);
+          if (!response.ok) {
+            throw new Error('Failed to fetch weather data');
+          }
+          const data = await response.json();
+          return this.mapToCommonDataModel(data);
+        } catch (error) {
+          console.error('Error fetching weather data from OpenWeatherMap:', error.message);
+          throw error;
+        }
+      }
+
+      mapToCommonDataModel(data) {
+        // Map fields from OpenWeatherMap's data model to common data model
+        const commonData = {
+          temperature: data.main.temp,
+          humidity: data.main.humidity,
+          // Map other fields as needed
+        };
+        return commonData;
+      }
+    }
+
+    // Define WeatherAPI class including WeatherstackAPI and AccuWeatherAPI (similar to previous example)
+
+    class WeatherAPI {
+      constructor(openWeatherMapApiKey, weatherstackApiKey, accuWeatherApiKey) {
+        this.openWeatherMapAPI = new OpenWeatherMapAPI(openWeatherMapApiKey);
+        // Initialize other weather APIs
+      }
+
+      async fetchData(city) {
+        try {
+          // Fetch data from each weather API
+          const openWeatherMapData = await this.openWeatherMapAPI.fetchData(city);
+          // Fetch data from other weather APIs
+          
+          // For simplicity, here we just return data from OpenWeatherMap
+          return openWeatherMapData;
+        } catch (error) {
+          console.error('Error fetching weather data:', error.message);
+          throw error;
+        }
+      }
+    }
+
+    // Example usage
+    const openWeatherMapApiKey = 'your_openweathermap_api_key';
+    // Define API keys for other weather APIs
+    
+    const weatherAPI = new WeatherAPI(openWeatherMapApiKey, /* Add other API keys here */);
+
+    const weatherInfoElement = document.getElementById('weatherInfo');
+
+    weatherAPI.fetchData('New York')
+      .then(commonData => {
+        // Display weather data
+        const weatherHtml = `
+          <p>Temperature: ${commonData.temperature}°C</p>
+          <p>Humidity: ${commonData.humidity}%</p>
+          <!-- Display other weather data as needed -->
+        `;
+        weatherInfoElement.innerHTML = weatherHtml;
+      })
+      .catch(error => {
+        // Handle error
+        console.error('Error fetching weather data:', error.message);
+        weatherInfoElement.textContent = 'Failed to fetch weather data. Please try again later.';
+      });
+  </script>
+</body>
+</html>
